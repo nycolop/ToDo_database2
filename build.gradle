@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.13' // Plugin para JavaFX
+}
+
+group = 'org.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.openjfx:javafx-controls:20' // Para los controles básicos de JavaFX
+    implementation 'org.openjfx:javafx-fxml:20'    // Si necesitas usar archivos FXML
+    implementation 'org.openjfx:javafx-web:20'  // Agregar el módulo de WebView
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+javafx {
+    version = "20"
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.web' ]  // Incluir el módulo javafx.web
+}
+
+test {
+    useJUnitPlatform()
+}
+
+application {
+    mainClass = 'com.example.Main'
+}
+
+
+tasks.withType(JavaExec) {
+    // Asegura que se añadan los módulos necesarios al ejecutar la aplicación
+    jvmArgs += [
+            '--module-path', configurations.runtimeClasspath.asPath,
+            '--add-modules', 'javafx.controls,javafx.fxml,javafx.web'
+    ]
+}

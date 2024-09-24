@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+  />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<header>
+  <h1>ToDo - Home - Grupo D</h1>
+
+  <section>
+    <h2>Cree una nueva tarea:</h2>
+    <form class="task-form">
+      <label for="task-id">ID</label>
+      <input type="text" id="task-id" name="task-id" placeholder="ID"/>
+
+      <label for="task-date">Fecha</label>
+      <input type="date" id="task-date" name="task-date"/>
+
+      <label for="task-description">Descripción</label>
+      <textarea
+          id="task-description"
+          name="task-description"
+          placeholder="Escribe la descripción aquí..."
+      ></textarea>
+
+      <label for="task-priority">Prioridad</label>
+      <select id="task-priority" name="task-priority">
+        <option value="alta">Alta</option>
+        <option value="media">Media</option>
+        <option value="baja">Baja</option>
+      </select>
+
+      <label for="task-status">Estado</label>
+      <select id="task-status" name="task-status">
+        <option value="pendiente">Pendiente</option>
+        <option value="en_progreso">En progreso</option>
+        <option value="completado">Completado</option>
+      </select>
+
+      <button type="submit">Guardar tarea</button>
+    </form>
+  </section>
+</header>
+
+<main>
+  <article class="task">
+    <p>id</p>
+    <p>fecha</p>
+    <p>descripcion descripcion descripcion</p>
+    <p>prioridad</p>
+    <p>estado</p>
+  </article>
+  <article class="task">
+    <p>id</p>
+    <p>fecha</p>
+    <p>descripcion descripcion descripcion</p>
+    <p>prioridad</p>
+    <p>estado</p>
+  </article>
+  <article class="task">
+    <p>id</p>
+    <p>fecha</p>
+    <p>descripcion descripcion descripcion</p>
+    <p>prioridad</p>
+    <p>estado</p>
+  </article>
+  <article class="task">
+    <p>id</p>
+    <p>fecha</p>
+    <p>descripcion descripcion descripcion</p>
+    <p>prioridad</p>
+    <p>estado</p>
+  </article>
+  <article class="task">
+    <p>id</p>
+    <p>fecha</p>
+    <p>descripcion descripcion descripcion</p>
+    <p>prioridad</p>
+    <p>estado</p>
+  </article>
+</main>gin
+
+<script>
+  function start() {
+
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+      document.addEventListener("appReady", function() {
+        start();
+      });
+  });
+</script>
+</body>
+</html>

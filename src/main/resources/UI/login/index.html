@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+  />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+  <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+  />
+</head>
+<body class="mt-6">
+<h1 class="title is-1 has-text-centered">Login</h1>
+<p id="validation" class="help is-danger has-text-centered">
+  Usuario incorrecto
+</p>
+
+<form class="column is-three-fifths is-offset-one-fifth">
+  <div class="field">
+    <label class="label">Nombre</label>
+    <div class="control">
+      <input class="input" id="input-name" type="text"/>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Apellido</label>
+    <div class="control">
+      <input
+          id="input-last-name"
+          class="input"
+          type="text"
+      />
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Contraseña</label>
+    <div class="control">
+      <input
+          id="input-password"
+          class="input"
+          type="password"
+      />
+    </div>
+  </div>
+
+  <button id="ingresar" class="button is-link">Ingresar</button>
+</form>
+
+<script>
+  function start() {
+    const validationText = document.getElementById("validation");
+    validationText.style.display = "none";
+
+    document.getElementById('ingresar').onclick = function(e) {
+      e.preventDefault();
+      const name = document.getElementById("input-name").value;
+      const lastName = document.getElementById("input-last-name").value;
+      const password = document.getElementById("input-password").value;
+
+      const userId = app.login(name, lastName, password);
+
+      if (userId !== -1) {
+        app.loadHomeView();
+      } else {
+        validationText.style.display = "block";
+      }
+    };
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("appReady", function () {
+      start();
+    });
+  });
+</script>
+</body>
+</html>

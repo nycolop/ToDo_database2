@@ -30,3 +30,14 @@ join
     Usuario_Tarea ut on u.id = ut.usuario_id
 join 
     Tarea t on t.id = ut.tarea_id;
+
+
+DELIMITER $$
+	CREATE PROCEDURE get_user_tasks(IN user_id INT)
+    BEGIN
+		SELECT t.*
+		FROM Usuario u
+		JOIN Usuario_Tarea ut ON u.id = ut.usuario_id
+		JOIN Tarea t ON ut.tarea_id = t.id
+		WHERE u.id = user_id;
+END $$

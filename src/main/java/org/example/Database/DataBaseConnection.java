@@ -1,6 +1,9 @@
 package org.example.Database;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import org.example.Task;
 
 public class DataBaseConnection {
 
@@ -22,13 +25,12 @@ public class DataBaseConnection {
     }
   }
 
-  public int getUsuario(String name, String lastName, String password) {
-    String query = "SELECT * FROM Usuario WHERE nombre = ? AND apellido = ? AND contrasena = ?;";
+  public int getUsuario(String nickName, String password) {
+    String query = "SELECT * FROM Usuario WHERE nick = ? AND contrasena = ?;";
 
     try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-      preparedStatement.setString(1, name);
-      preparedStatement.setString(2, lastName);
-      preparedStatement.setString(3, password);
+      preparedStatement.setString(1, nickName);
+      preparedStatement.setString(2, password);
 
       ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -42,10 +44,11 @@ public class DataBaseConnection {
     }
   }
 
-  public void getUserTasks(int userId) {
-    String query = "SELECT u.id AS usuario_id, ut.tarea_id, t.id AS tarea_id " + "FROM Usuario u "
+  public List<Task> getUserTasks(int userId) {
+    String query = "SELECT t.* " + "FROM Usuario u "
         + "JOIN Usuario_Tarea ut ON u.id = ut.usuario_id " + "JOIN Tarea t ON ut.tarea_id = t.id "
         + "WHERE u.id = ?";
+    List<Task> tasks = new ArrayList<>();
 
     try {
       PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -53,15 +56,22 @@ public class DataBaseConnection {
       ResultSet resultSet = preparedStatement.executeQuery();
 
       while (resultSet.next()) {
-        int usuarioId = resultSet.getInt("usuario_id");
-        int tareaId = resultSet.getInt("tarea_id");
+        String name = resultSet.getString("nombre");
+        String description = resultSet.getString("descripcion");
+        String priority = resultSet.getString("prioridad");
+        String status = resultSet.getString("estado");
+        String creationDate = resultSet.getString("fecha_creacion");
+        String startDate = resultSet.getString("fecha_inicio");
+        String estimatedEndDate = resultSet.getString("fecha_fin_estimado");
 
-        // Procesar los datos según sea necesario
-        System.out.println("Usuario ID: " + usuarioId + ", Tarea ID: " + tareaId);
+        tasks.add(new Task(name, description, priority, status, creationDate, startDate,
+            estimatedEndDate));
       }
     } catch (SQLException e) {
       System.out.println("Error en la consulta: " + e.getMessage());
     }
+
+    return tasks;
   }
 
   public void viewTasks() {

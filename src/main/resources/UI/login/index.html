@@ -20,20 +20,9 @@
 
 <form class="column is-three-fifths is-offset-one-fifth">
   <div class="field">
-    <label class="label">Nombre</label>
+    <label class="label">Nombre de usuario</label>
     <div class="control">
-      <input class="input" id="input-name" type="text"/>
-    </div>
-  </div>
-
-  <div class="field">
-    <label class="label">Apellido</label>
-    <div class="control">
-      <input
-          id="input-last-name"
-          class="input"
-          type="text"
-      />
+      <input class="input" id="input-nickname" type="text"/>
     </div>
   </div>
 
@@ -58,11 +47,10 @@
 
     document.getElementById('ingresar').onclick = function(e) {
       e.preventDefault();
-      const name = document.getElementById("input-name").value;
-      const lastName = document.getElementById("input-last-name").value;
+      const nickName = document.getElementById("input-nickname").value;
       const password = document.getElementById("input-password").value;
 
-      const userId = app.login(name, lastName, password);
+      const userId = app.login(nickName, password);
 
       if (userId !== -1) {
         app.loadHomeView();

@@ -17,9 +17,6 @@
   <section>
     <h2>Cree una nueva tarea:</h2>
     <form class="task-form">
-      <label for="task-id">ID</label>
-      <input type="text" id="task-id" name="task-id" placeholder="ID"/>
-
       <label for="task-date">Fecha</label>
       <input type="date" id="task-date" name="task-date"/>
 
@@ -50,53 +47,38 @@
 </header>
 
 <main>
-  <article class="task">
-    <p>id</p>
-    <p>fecha</p>
-    <p>descripcion descripcion descripcion</p>
-    <p>prioridad</p>
-    <p>estado</p>
-  </article>
-  <article class="task">
-    <p>id</p>
-    <p>fecha</p>
-    <p>descripcion descripcion descripcion</p>
-    <p>prioridad</p>
-    <p>estado</p>
-  </article>
-  <article class="task">
-    <p>id</p>
-    <p>fecha</p>
-    <p>descripcion descripcion descripcion</p>
-    <p>prioridad</p>
-    <p>estado</p>
-  </article>
-  <article class="task">
-    <p>id</p>
-    <p>fecha</p>
-    <p>descripcion descripcion descripcion</p>
-    <p>prioridad</p>
-    <p>estado</p>
-  </article>
-  <article class="task">
-    <p>id</p>
-    <p>fecha</p>
-    <p>descripcion descripcion descripcion</p>
-    <p>prioridad</p>
-    <p>estado</p>
-  </article>
-</main>gin
+
+</main>
 
 <script>
-  function start() {
+function start() {
+  const tasks = JSON.parse(app.getUserTasks());
+  const mainContainer = document.querySelector('main');
+  let htmlArticles = "";
 
+  if (tasks.length) {
+    for (const task of tasks) {
+      htmlArticles += `
+        <article class="task">
+          <p>${task.name}</p>
+          <p>Inicio: ${task.startDate}  Fin: ${task.estimatedEndDate}</p>
+          <p>${task.description}</p>
+          <p>${task.priority}</p>
+          <p>${task.status}</p>
+        </article>`;
+    }
+  } else {
+    htmlArticles += "<h1>Sin tareas</h1>";
   }
 
-  document.addEventListener("DOMContentLoaded", function() {
-      document.addEventListener("appReady", function() {
-        start();
-      });
-  });
+  mainContainer.innerHTML = htmlArticles;
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("appReady", function() {
+      start();
+    });
+});
 </script>
 </body>
 </html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>To Do Project</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <nav class="navbar is-dark">
+        <div class="navbar-brand">
+            <div class="navbar-item">
+                <!-- <figure class="image is-32x32">
+                    <img class="is-rounded" src="https://via.placeholder.com/32x32" alt="Usuario">
+                </figure>
+                <span class="navbar-item">Usuario</span> -->
+                <i class="fa-solid fa-user"></i> 
+                </figure>
+                <span id="display-user-name" class="navbar-item">Usuario</span>
+            </div>
+        </div>
+        <div class="navbar-end">
+            <div class="navbar-item">
+                GRUPO D / To Do Project
+            </div>
+        </div>
+    </nav>
+
+    <div class="columns is-gapless">
+        <aside class="menu column is-2 is-fullheight">
+            <ul class="menu-list">
+                <p class="menu-label">Crear</p>
+                <li id="button-create-task"><a href="#"><i class="fas fa-tasks"></i>Crear tareas</a></li>
+
+                <p class="menu-label">Revisar</p>
+                <li id="button-view-tasks"><a href="#"><i class="fas fa-check-square"></i>Tareas</a></li>
+
+                <p class="menu-label">Personal</p>
+                <li><a href="#"><i class="fas fa-user-cog"></i>Config usuario</a></li>
+                <li id="button-logout">
+                    <a href="#"><i class="fas fa-sign-out-alt"></i>Cerrar sesión</a>
+                </li>
+            </ul>
+        </aside>
+
+        <div id="tasks-container" class="column">
+        </div>
+    </div>
+
+</body>
+</html>

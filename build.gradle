@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'application'
-    id 'org.openjfx.javafxplugin' version '0.0.13' // Plugin para JavaFX
+    id 'org.openjfx.javafxplugin' version '0.0.13'
 }
 
 group = 'org.example'
@@ -16,16 +16,16 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.18.0")
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     implementation("mysql:mysql-connector-java:8.0.33")
-    implementation 'org.openjfx:javafx-controls:20' // Para los controles básicos de JavaFX
-    implementation 'org.openjfx:javafx-fxml:20'    // Si necesitas usar archivos FXML
-    implementation 'org.openjfx:javafx-web:20'  // Agregar el módulo de WebView
+    implementation 'org.openjfx:javafx-controls:20'
+    implementation 'org.openjfx:javafx-fxml:20'
+    implementation 'org.openjfx:javafx-web:20'
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
 
 javafx {
     version = "20"
-    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.web' ]  // Incluir el módulo javafx.web
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.web' ]
 }
 
 test {

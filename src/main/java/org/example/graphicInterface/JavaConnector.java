@@ -6,14 +6,14 @@ import javafx.application.Platform;
 import javafx.scene.web.WebEngine;
 import org.example.Database.DataBaseConnection;
 import org.example.Task;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
+import org.example.User;
+import org.example.utils.Json;
 
 public class JavaConnector {
 
   private final WebEngine we;
   private DataBaseConnection database;
-  int userId;
+  private User loggedUser;
 
   public JavaConnector(WebEngine webEngine) {
     this.we = webEngine;
@@ -32,23 +32,54 @@ public class JavaConnector {
 
   public void loadHomeView() {
     Platform.runLater(
-        () -> we.load(getClass().getResource("/UI/home/index.html").toExternalForm()));
+        () -> we.load(getClass().getResource("/UI/homev2/index-home.html").toExternalForm()));
   }
 
-  public int login(String nickName, String password) {
-    userId = database.getUsuario(nickName, password);
-    return userId;
+  public void loadRegisterView() {
+    Platform.runLater(
+        () -> we.load(getClass().getResource("/UI/user_register/registro.html").toExternalForm()));
+  }
+
+  public void logout() {
+    loggedUser = null;
+    Platform.runLater(
+        () -> we.load(getClass().getResource("/UI/login/index.html").toExternalForm()));
+  }
+
+  public String login(String nickName, String password) {
+    loggedUser = database.getUsuario(nickName, password);
+    Json<User> json = new Json<>();
+    return json.convertToJson(loggedUser);
   }
 
   public String getUserTasks() {
-    try {
-      List<Task> tasks = database.getUserTasks(userId);
-      ObjectMapper mapper = new ObjectMapper();
+    List<Task> tasks = database.getUserTasks(loggedUser.getId());
+    Json<List<Task>> json = new Json<>();
+    return json.convertToJson(tasks);
+  }
 
-      return mapper.writeValueAsString(tasks);
-    } catch(IOException e) {
-      e.printStackTrace();
-      return "[]";
+  public String getLoggedUser() {
+    Json<User> json = new Json<>();
+    return json.convertToJson(loggedUser);
+  }
+
+  public void createTask(int id, String name, String description, String priority, String status,
+      String startDate, String estimatedEndDate) {
+    Task newTask = new Task(id, name, description, priority, status, "", startDate, estimatedEndDate);
+    database.createTask(newTask, loggedUser.getId());
+  }
+
+  public void deleteTask(int taskId) {
+    database.deleteTask(taskId);
+  }
+
+  public int registerUser(String nombre, String apellido, String contrasena) {
+    boolean success = database.insertarUsuario(nombre, apellido, contrasena);
+
+    if (success) {
+      return database.getLastInsertedId();
+    } else {
+      return -1;
     }
   }
 }

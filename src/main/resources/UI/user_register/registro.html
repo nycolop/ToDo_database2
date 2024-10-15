@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"/>
+    <title>Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+<div class="login-container">
+    <div class="columns">
+        <div class="column is-half">
+            <div class="box">
+                <h1 class="welcome-message">Registro de usuario</h1>
+
+                <h2 class="login-title">Register</h2>
+
+                <p id="validation" class="help is-danger has-text-centered" style="display: none;">
+                    Usuario incorrecto
+                </p>
+
+                <form>
+                    <div class="field">
+                        <label class="label">Nombre</label>
+                        <div class="control">
+                            <input class="input" id="input-nombre" type="text" placeholder="Nombre"/>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Apellido</label>
+                        <div class="control">
+                            <input class="input" id="input-apellido" type="text" placeholder="Apellido"/>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">Contraseña</label>
+                        <div class="control">
+                            <input class="input" id="input-password" type="password" placeholder="********"/>
+                        </div>
+                    </div>
+
+                    <button id="registro" class="button is-link">REGISTRAR</button>
+
+                    <button id="ingresar" class="button is-secondary mt-4" type="button">
+                        Ir a Inicio de Sesión
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="column is-half image-side">
+            <img src="image1.png" alt="Imagen login" class="login-image" />
+        </div>
+    </div>
+</div>
+</body>
+</html>

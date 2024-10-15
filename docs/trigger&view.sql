@@ -41,3 +41,13 @@ DELIMITER $$
 		JOIN Tarea t ON ut.tarea_id = t.id
 		WHERE u.id = user_id;
 END $$
+
+USE proyectoToDo;
+
+DELIMITER $$
+	CREATE PROCEDURE get_user(IN nick_name VARCHAR(100), IN password VARCHAR(255))
+	BEGIN
+        SELECT id, nombre, apellido, nick, contrasena
+        FROM Usuario
+        WHERE nick = nick_name AND contrasena = password;
+END $$

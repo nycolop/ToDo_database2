@@ -2,6 +2,7 @@ package org.example;
 
 public class Task {
 
+  private int id;
   private String name;
   private String description;
   private String priority;
@@ -10,8 +11,9 @@ public class Task {
   private String startDate;
   private String estimatedEndDate;
 
-  public Task(String name, String description, String priority, String status, String creationDate,
-      String startDate, String estimatedEndDate) {
+  public Task(int id, String name, String description, String priority, String status,
+      String creationDate, String startDate, String estimatedEndDate) {
+    this.id = id;
     this.name = name;
     this.description = description;
     this.priority = priority;
@@ -19,6 +21,10 @@ public class Task {
     this.creationDate = creationDate;
     this.startDate = startDate;
     this.estimatedEndDate = estimatedEndDate;
+  }
+
+  public int getId() {
+    return id;
   }
 
   public String getName() {

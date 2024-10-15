@@ -176,4 +176,30 @@ public class DataBaseConnection {
       return false;
     }
   }
+
+  public boolean updateTask(Task task) {
+    String sql = "UPDATE Tarea SET nombre = ?, estado = ?, descripcion = ?, prioridad = ?, " +
+        "fecha_inicio = ?, fecha_fin_estimado = ? " +
+        "WHERE id = ?";
+
+    try {
+      PreparedStatement pstmt = connection.prepareStatement(sql);
+
+      pstmt.setString(1, task.getName());
+      pstmt.setString(2, task.getStatus());
+      pstmt.setString(3, task.getDescription());
+      pstmt.setString(4, task.getPriority());
+      pstmt.setString(5, task.getStartDate());
+      pstmt.setString(6, task.getEstimatedEndDate());
+
+      pstmt.setInt(7, task.getId());
+
+      int affectedRows = pstmt.executeUpdate();
+
+      return affectedRows > 0;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
 }

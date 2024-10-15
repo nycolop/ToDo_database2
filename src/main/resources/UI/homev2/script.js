@@ -1,5 +1,106 @@
 let globalSelectedFilter = 'Todas';
 
+function blockScroll() {
+  document.body.style.overflow = "hidden";
+  document.querySelector('html').style.overflow = "hidden";
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+
+function unlockScroll() {
+  document.body.style.overflow = "visible";
+  document.querySelector('html').style.overflow = "visible";
+}
+
+function dismountUpdateForm() {
+  const parentElement = document.body;
+  unlockScroll();
+
+   if (parentElement.lastChild) {
+    parentElement.removeChild(parentElement.lastChild);
+   }
+}
+
+function loadUpdateForm(task) {
+  blockScroll();
+  const newChild = document.createElement("div");
+
+  newChild.innerHTML = `
+    <div id="update-container">
+        <h2>Actualizar tarea</h2>
+
+        <form class="task-form animate__animated animate__fadeIn">
+          <label for="task-nombre">Nombre</label>
+          <input type="text" id="task-nombre" name="task-nombre" required />
+
+          <label for="task-start-date">Fecha de inicio</label>
+          <input
+            type="date"
+            id="task-start-date"
+            name="task-start-date"
+            placeholder="YYYY-MM-DD HH:MM:SS"
+            required
+          />
+
+          <label for="task-end-date">Fecha de fin estimada</label>
+          <input
+            type="date"
+            id="task-end-date"
+            name="task-end-date"
+            placeholder="YYYY-MM-DD HH:MM:SS"
+            required
+           />
+
+          <label for="task-description">Descripción</label>
+          <textarea
+              id="task-description"
+              name="task-description"
+              placeholder="Escribe la descripción aquí..."
+              required
+          ></textarea>
+
+          <label for="task-priority">Prioridad</label>
+          <select id="task-priority" name="task-priority">
+            <option value="alta">Alta</option>
+            <option value="media">Media</option>
+            <option value="baja">Baja</option>
+          </select>
+
+          <label for="task-status">Estado</label>
+          <select id="task-status" name="task-status">
+            <option value="pendiente">Pendiente</option>
+            <option value="en_progreso">En progreso</option>
+            <option value="completado">Completado</option>
+          </select>
+
+          <button id="button-update-task" type="submit">Actualizar tarea</button>
+
+          </form>
+        <button id="close-update-form">Cerrar</button>
+        </div>
+    `;
+
+  document.body.appendChild(newChild);
+
+  document.getElementById('close-update-form').onclick = () => {
+    dismountUpdateForm();
+  };
+
+  document.getElementById('button-update-task').onclick = (e) => {
+    const name = document.getElementById('task-nombre').value;
+    const startDate = document.getElementById('task-start-date').value;
+    const estimatedEndDate = document.getElementById('task-end-date').value;
+    const description = document.getElementById('task-description').value;
+    const priority = document.getElementById('task-priority').value;
+    const status = document.getElementById('task-status').value;
+
+
+    app.updateTask(task.id, name, description, priority, status, startDate, estimatedEndDate);
+  };
+}
+
 function loadUserTasks(selectedStatus = 'Todas') {
   const tasks = JSON.parse(app.getUserTasks());
   let htmlArticles = "";
@@ -18,7 +119,7 @@ function loadUserTasks(selectedStatus = 'Todas') {
 
           <section>
             <button id="boton-borrar-tarea" class="button is-danger">Borrar tarea</button>
-            <button class="button is-primary">Actualizar</button>
+            <button id="boton-update-tarea" class="button is-primary">Actualizar</button>
           </section>
         </article>`;
     }
@@ -54,6 +155,13 @@ function addTaskListeners() {
         const taskId = task.id;
 
         const deleteButton = task.querySelector("#boton-borrar-tarea");
+        const updateButton = task.querySelector('#boton-update-tarea');
+
+        if (updateButton) {
+          updateButton.onclick = () => {
+            loadUpdateForm(task);
+          };
+        }
 
         if (deleteButton) {
             deleteButton.onclick = () => {
@@ -64,6 +172,7 @@ function addTaskListeners() {
             };
         }
     }
+
 }
 
 function loadHome() {

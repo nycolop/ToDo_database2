@@ -82,4 +82,10 @@ public class JavaConnector {
       return -1;
     }
   }
+
+  public void updateTask(int id, String name, String description, String priority, String status,
+      String startDate, String estimatedEndDate) {
+    Task updatedTask = new Task(id, name, description, priority, status, "", startDate, estimatedEndDate);
+    database.updateTask(updatedTask);
+  }
 }

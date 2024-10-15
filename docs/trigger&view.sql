@@ -1,4 +1,5 @@
 use proyectoToDo;
+
 DELIMITER $$
 CREATE TRIGGER actualizar_estado_tarea
 BEFORE UPDATE ON Tarea
@@ -41,8 +42,6 @@ DELIMITER $$
 		JOIN Tarea t ON ut.tarea_id = t.id
 		WHERE u.id = user_id;
 END $$
-
-USE proyectoToDo;
 
 DELIMITER $$
 	CREATE PROCEDURE get_user(IN nick_name VARCHAR(100), IN password VARCHAR(255))

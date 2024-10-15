@@ -1,6 +1,6 @@
+let globalSelectedFilter = 'Todas';
 
 function loadUserTasks(selectedStatus = 'Todas') {
-  const mainContainer = document.querySelector("#tasks-container");
   const tasks = JSON.parse(app.getUserTasks());
   let htmlArticles = "";
 
@@ -9,7 +9,7 @@ function loadUserTasks(selectedStatus = 'Todas') {
   if (filteredTasks.length) {
     for (const task of filteredTasks) {
       htmlArticles += `
-        <article id=${task.id} class="task">
+        <article id=${task.id} class="task animate__animated animate__fadeIn">
           <p>${task.name}</p>
           <p>Inicio: ${task.startDate}  Fin: ${task.estimatedEndDate}</p>
           <p>${task.description}</p>
@@ -23,51 +23,75 @@ function loadUserTasks(selectedStatus = 'Todas') {
         </article>`;
     }
   } else {
-    htmlArticles += "<h2>Sin tareas</h2>";
+    htmlArticles += '<h2 class="animate__animated animate__fadeIn">Sin tareas</h2>';
   }
 
-  mainContainer.innerHTML = htmlArticles;
-
-  for (const task of document.querySelectorAll(".task")) {
-    const taskId = task.id;
-
-    task.querySelector("#boton-borrar-tarea").onclick = () => {
-      app.deleteTask(taskId);
-    }
-  }
+  return htmlArticles;
 }
 
 function loadTaskFilter() {
-    const mainContainer = document.querySelector("#tasks-container");
-    const filterContainer = document.createElement('div');
+    let filterHTML = "";
 
-    filterContainer.innerHTML = `
-    <div class="task-filter">
-      <label for="task-status-filter">Filtrar por estado: </label>
-      <select id="task-status-filter">
-        <option value="Todas">Todos</option>
-        <option value="Pendiente">Pendiente</option>
-        <option value="En Progreso">En progreso</option>
-        <option value="Completado">Completado</option>
-      </select>
-    </div>
-  `;
+    filterContainer = `
+      <div class="task-filter">
+        <label for="task-status-filter">Filtrar por estado: </label>
+        <select id="task-status-filter">
+          <option value="Todas">Todos</option>
+          <option value="Pendiente">Pendiente</option>
+          <option value="En_Progreso">En progreso</option>
+          <option value="Completado">Completado</option>
+        </select>
+      </div>
+    `;
 
+    return filterContainer;
+}
 
-    mainContainer.insertAdjacentElement('beforebegin', filterContainer);
+function addTaskListeners() {
+    const tasks = document.querySelectorAll(".task");
+
+    for (const task of tasks) {
+        const taskId = task.id;
+
+        const deleteButton = task.querySelector("#boton-borrar-tarea");
+
+        if (deleteButton) {
+            deleteButton.onclick = () => {
+              app.deleteTask(taskId);
+
+              document.getElementById('tasks-container').innerHTML = loadUserTasks(globalSelectedFilter);
+              addTaskListeners();
+            };
+        }
+    }
+}
+
+function loadHome() {
+    const mainContainer = document.querySelector("#main-container");
+    mainContainer.innerHTML = `
+      <div id="task-filter-container"></div>
+      <div id="tasks-container"></div>
+    `;
+
+    document.getElementById('tasks-container').innerHTML = loadUserTasks(globalSelectedFilter);
+    document.getElementById('task-filter-container').innerHTML = loadTaskFilter();
 
     document.getElementById("task-status-filter").addEventListener("change", function() {
-        const selectedStatus = this.value;
-        loadUserTasks(selectedStatus);
+       globalSelectedFilter = this.value;
+       document.getElementById('tasks-container').innerHTML = loadUserTasks(globalSelectedFilter);
+       addTaskListeners();
     });
+
+    addTaskListeners();
 }
 
 function loadCreateForm() {
-  const mainContainer = document.querySelector("#tasks-container");
+  const mainContainer = document.querySelector("#main-container");
+
   mainContainer.innerHTML = `
       <h2>Cree una nueva tarea:</h2>
 
-      <form class="task-form">
+      <form class="task-form animate__animated animate__fadeIn">
         <label for="task-nombre">Nombre</label>
         <input type="text" id="task-nombre" name="task-nombre" required />
 
@@ -123,8 +147,7 @@ function start() {
 
   buttonViewTasks.style.backgroundColor = "#3273dc";
   buttonViewTasks.querySelector("a").style.color = "white";
-  loadTaskFilter();
-  loadUserTasks();
+  loadHome();
 
   const buttonLogout = document.querySelector("#button-logout");
   buttonLogout.onclick = () => {
@@ -163,7 +186,7 @@ function start() {
      buttonCreateTask.style.backgroundColor = "transparent";
      buttonCreateTask.querySelector("a").style.color = "#313030";
 
-     loadUserTasks();
+     loadHome();
   }
 }
 

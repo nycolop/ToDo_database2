@@ -1,5 +1,6 @@
 create database proyectoToDo;
 use proyectoToDo;
+
 create table Usuario (
     id int auto_increment primary key,
     nombre varchar(50) not null,

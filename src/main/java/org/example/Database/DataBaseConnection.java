@@ -86,19 +86,11 @@ public class DataBaseConnection {
   public void createTask(Task task, int userId) {
     String query = "INSERT INTO Tarea (nombre, estado, descripcion, prioridad, fecha_inicio, fecha_fin_estimado, fecha_final) VALUES (?, ?, ?, ?, ?, ?, NULL)";
     String query2 = "INSERT INTO Usuario_Tarea (usuario_id, tarea_id) VALUES (?, ?)";
+    ResultSet generatedKeys = null;
 
     try {
-      PreparedStatement insertTaskStatement = connection.prepareStatement(query);
+      PreparedStatement insertTaskStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
       PreparedStatement joinUserTaskStatement = connection.prepareStatement(query2);
-
-      ResultSet tasks = statement.executeQuery("SELECT id FROM Tarea;");
-      int newTaskId = 0;
-
-      while (tasks.next()) {
-        newTaskId = tasks.getInt("id");
-      }
-
-      newTaskId += 1;
 
       insertTaskStatement.setString(1, task.getName());
       insertTaskStatement.setString(2, task.getStatus());
@@ -107,10 +99,19 @@ public class DataBaseConnection {
       insertTaskStatement.setTimestamp(5, Timestamp.valueOf(task.getStartDate()));
       insertTaskStatement.setTimestamp(6, Timestamp.valueOf(task.getEstimatedEndDate()));
 
-      joinUserTaskStatement.setInt(1, userId);
-      joinUserTaskStatement.setInt(2, newTaskId);
+      int affectedRows = insertTaskStatement.executeUpdate();
+      int lastInsertId = -1;
 
-      insertTaskStatement.executeUpdate();
+      if (affectedRows > 0) {
+        generatedKeys = insertTaskStatement.getGeneratedKeys();
+        if (generatedKeys.next()) {
+          lastInsertId = generatedKeys.getInt(1);
+        }
+      }
+
+      joinUserTaskStatement.setInt(1, userId);
+      joinUserTaskStatement.setInt(2, lastInsertId);
+
       joinUserTaskStatement.executeUpdate();
     } catch (Exception e) {
       e.printStackTrace();
@@ -119,6 +120,7 @@ public class DataBaseConnection {
 
   public void deleteTask(int taskId) {
     String query = "DELETE FROM Tarea WHERE id = ?";
+
     try (PreparedStatement statement = connection.prepareStatement(query)) {
       statement.setInt(1, taskId);
       int rowsAffected = statement.executeUpdate();
